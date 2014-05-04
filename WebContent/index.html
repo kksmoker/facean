@@ -1,0 +1,200 @@
+<!--
+作者：284135112@qq.com,张敏鹏
+时间：2014-04-21
+描述：在线拍照,人脸分析
+-->
+<!DOCTYPE html>
+<html xmlns:wb=“http://open.weibo.com/wb”>
+	<head>
+		<meta charset="utf-8" />
+		<title>瞅瞅——在线人脸分析</title>
+		<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://qzonestyle.gtimg.cn/qzone/app/qzlike/qzopensl.js#jsdate=20111201" charset="utf-8"></script>
+		<meta name="description" content="瞅瞅 - 拍照、人脸识别、Face++、人脸分析、微笑指数、微博分享、qq空间">
+		<meta name="author" content="张敏鹏,瞅瞅,zmp,daymark">
+		<link rel="shortcut icon" href="img/favicon.png" type="image/x-icon" />
+		<script src="js/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/facepp-sdk.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.form.js" type="text/javascript" charset="UTF-8"></script>
+		<script src="js/jquery-ui-1.10.4.custom.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/modalHide.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/webcam.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/up2storage.js" charset="UTF-8"></script>
+		<script src="js/ctrl.js" type="text/javascript" charset="utf-8"></script>
+		<!-- Bootstrap -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.4.custom.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+		<script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<!-- nav -->
+		<nav class="navbar navbar-inverse" role="navigation">
+			<a class="navbar-brand">
+				<b>瞅瞅</b>
+			</a>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
+				<ul class="nav navbar-nav">
+					<li><a href="javascript:void(0)">首页</a></li>
+				</ul>
+				<ul class="nav navbar-nav">
+					<li><a href="show.html">演示</a></li>
+				</ul>
+				<ul class="nav navbar-nav">
+					<li><a href="about.html">关于</a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- end nav -->
+
+		<!-- 展示panel -->
+		<div class="col-lg-5 container col-lg-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><span class="glyphicon glyphicon-picture"></span>&nbsp;牛逼的你</h3>
+				</div>
+				<div class="panel-body">
+					<div id="photo">
+						<img src="img/come.png" id="show" />
+					</div>
+					<br />
+					<div class="col-lg-8" id="btn-fun">
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="urlstr" placeholder="图片URL">
+						</div>
+						<button class="btn btn-default" id="btn-url">
+							<span class="glyphicon glyphicon-link" ></span>
+						</button>
+						<button class="btn btn-default" id='btn-camera'>
+							<span class="glyphicon glyphicon-camera" ></span>
+						</button>
+						<button class="btn btn-default" data-toggle="modal" data-target="#uploadModal">
+							<span class="glyphicon glyphicon-cloud-upload"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end 展示panel -->
+
+		<!--分析结果 -->
+		<div class="col-lg-3 container">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>&nbsp;分析结果</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group" id="panel-result">
+						<li class="list-group-item">
+							<img src="img/pose.png" class="img-responsive img-rounded" alt="先摆个pose照张相吧...">
+							<span class="label label-danger">0</span>&nbsp;&nbsp;先摆个pose照张相吧...
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- end 分析结果 -->
+
+		<!-- 分享分析结果 -->
+		<div class="col-lg-3 container">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><span class="glyphicon glyphicon-share"></span>&nbsp;分享</h3>
+				</div>
+				<div class="panel-body">
+					<span>
+						<wb:share-button  appkey="2W0t9p" addition="number" type="button" pic="http://www.daymark.cn/img/five.png" default_text="大家来&nbsp;'瞅瞅'&nbsp;,看看你咋样?"></wb:share-button>
+					</span>
+					<br />
+					<script type="text/javascript">
+						(function(){
+						var p = {
+						url:location.href,
+						showcount:'1',/*是否显示分享总数,显示：'1'，不显示：'0' */
+						desc:'虽然没有大V的模样,确有大V的心肠...',/*默认分享理由(可选)*/
+						summary:'瞅瞅是由DayMark小组基于Face++开发的人脸识别和分析应用,简单易用好玩,可以通过URL、 在线拍照和上传图片形式对图片中的人脸进行分析...',/*分享摘要(可选)*/
+						title:'来自瞅瞅网',/*分享标题(可选)*/
+						site:'来自瞅瞅网',/*分享来源 如：腾讯网(可选)*/
+						pics:'http://www.daymark.cn/img/five.png', /*分享图片的路径(可选)*/
+						style:'102',
+						width:145,
+						height:30
+						};
+						var s = [];
+						for(var i in p){
+						s.push(i + '=' + encodeURIComponent(p[i]||''));
+						}
+						document.write(['<a version="1.0" class="qzOpenerDiv" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?',s.join('&'),'" target="_blank">分享</a>'].join(''));
+						})();
+					</script>
+				</div>
+			</div>
+		</div>
+		<!-- end 分享分析结果 -->
+
+		<!-- Modal capture-->
+		<div id="capture-modal" title="拍照">
+			<div id="photograph" style="width: 470px;height: 300px;"></div>
+			<div id="btn-group"></div>
+		</div>
+		<!-- end Modal capture-->
+
+		<!-- Modal upload -->
+		<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModal" aria-hidden="false">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myModalLabel"><span class="glyphicon-picture glyphicon"></span> 上传图片<span class="label label-green">(大小3M以内,尺寸470*300左右) </span></h4>
+					</div>
+					<div class="modal-body">
+						<form role="form" id="imgform" method="post" action="Up2Image" enctype="multipart/form-data">
+							<div class="form-group">
+								<label for="exampleInputEmail1">选择文件:</label>
+								<input type="file" name="imgfile" class="btn btn-default" id="imgfile" />
+							</div>
+							<div id="process">
+							</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" id="btn-upload">
+							<span class="glyphicon glyphicon-cloud-upload"></span>
+					    </button>
+					    </form>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">
+							<span class="glyphicon glyphicon-off"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end Modal upload -->
+		<!--版权声明 -->
+		<div class="col-lg-12" id="footer">
+			<hr />
+			<div class="col-lg-offset-4">
+				<a>© Copyright 2014-2015 zmp. All Rights Reserved.</a> 
+				 &nbsp;&nbsp;&nbsp;&nbsp;
+			    <a href="http://www.张敏鹏.cn" target="_blank" title="http://www.张敏鹏.cn">官网</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+			    <a href="http://weibo.com/xingtaijuan/" target="_blank" title="DayMark">微博</a>
+			     &nbsp;&nbsp;&nbsp;&nbsp;
+			    <a href="mailto:xingtaijuan@126.com" target="_blank" title="284135112@qq.com">合作</a>
+			    &nbsp;&nbsp;&nbsp;&nbsp;
+			    <a href="tencent://QQInterLive/?Cmd=2&Uin=284135112" title="284135112">QQ</a>
+			   
+			</div>
+			<br />
+		</div>
+		<!-- 版权声明结束 -->
+	</body>
+</html>

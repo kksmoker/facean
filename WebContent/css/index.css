@@ -1,0 +1,31 @@
+#photograph {
+	margin-left: 40px;
+	width: 470px;
+	height: 300px;
+}
+
+#photo {
+	width: 470px;
+	height: 300px;
+	margin-left: 10px;
+	border: solid #ADADAD 1px;
+	background-color: #EDEDED;
+}
+
+#photo img {
+	max-width: 468px;
+	max-height: 298px;
+}
+
+#btn-group {
+	margin-top: 15px;
+}
+
+#btn-fun {
+	margin-top: 15px;
+}
+
+#footer {
+	position: relative;
+	bottom: 0px;
+}
