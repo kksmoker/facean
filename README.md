@@ -12,3 +12,7 @@ author: 张敏鹏
 
 Email: 284135112@qq.com
 
+---
+
+### Translations
+* [Better Java in Chinese](./test.md)
